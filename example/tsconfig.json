@@ -1,0 +1,10 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "expo-zip-zip": ["../src/index"],
+      "expo-zip-zip/*": ["../src/*"]
+    }
+  }
+}
