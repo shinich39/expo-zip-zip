@@ -1,6 +1,7 @@
 import ExpoModulesCore
 import SSZipArchive
 
+
 enum ModuleError: Error {
     case ERROR
     case SOURCE
@@ -26,8 +27,9 @@ extension ModuleError: LocalizedError {
 func getDirPath(
     _ dirPath: String
 ) -> String? {
-    let url = URL(filePath: dirPath)
-        .appendingPathComponent(UUID().uuidString, isDirectory: true)
+    guard let url = NSURL(fileURLWithPath: dirPath).appendingPathComponent(UUID().uuidString, isDirectory: true) else {
+        return nil
+    }
 
     do {
         try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
@@ -41,8 +43,9 @@ func getFilePath(
     _ dirPath: String,
     _ ext: String
 ) -> String? {
-    let url = URL(filePath: dirPath)
-        .appendingPathComponent(UUID().uuidString + ext)
+    guard let url = NSURL(fileURLWithPath: dirPath).appendingPathComponent(UUID().uuidString + ext) else {
+        return nil
+    }
     
     return url.path
 }
@@ -51,22 +54,6 @@ func encode(
   _ str: String
 ) -> String? {
     return str.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-}
-
-func compress(
-    _ dirPath: String
-) throws -> String {
-    guard let srcPath = encode(dirPath) else {
-        throw ModuleError.SOURCE
-    }
-    
-    guard let dstPath = getFilePath(NSTemporaryDirectory(), ".zip") else {
-        throw ModuleError.DESTINATION
-    }
-    
-    SSZipArchive.createZipFile(atPath: dstPath, withContentsOfDirectory: srcPath, keepParentDirectory: false)
-
-    return dstPath
 }
 
 func uncompress(
@@ -102,6 +89,22 @@ func uncompress(
     if !success {
         throw ModuleError.ERROR
     }
+
+    return dstPath
+}
+
+func compress(
+    _ dirPath: String
+) throws -> String {
+    guard let srcPath = encode(dirPath) else {
+        throw ModuleError.SOURCE
+    }
+    
+    guard let dstPath = getFilePath(NSTemporaryDirectory(), ".zip") else {
+        throw ModuleError.DESTINATION
+    }
+    
+    SSZipArchive.createZipFile(atPath: dstPath, withContentsOfDirectory: srcPath, keepParentDirectory: false)
 
     return dstPath
 }
