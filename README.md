@@ -21,7 +21,7 @@ const { assets, canceled } = await dp.getDocumentAsync();
 const file = assets?.[0];
 if (file) {
   // Uncompress Example
-  const res = ExpoZipZip.uncompress(file.uri);
+  const res = uncompress(file.uri);
   // dirPath: String
   // file://...
   
@@ -29,7 +29,7 @@ if (file) {
   const files = await fs.readDirectoryAsync(res);
 
   // Compress Example
-  const res2 = ExpoZipZip.compress(res);
+  const res2 = compress(res);
   // zipPath: String
   // file://...
 }
