@@ -1,10 +1,8 @@
 # expo-zip-zip
 
-Build a epub structure with javascript
+Compress and uncompress zip in expo.
 
 ## Getting Started
-
-Developing...
 
 ### Installation
 
@@ -15,15 +13,25 @@ npm install github:shinich39/expo-zip-zip
 ### Usage
 
 ```js
+import { compress, uncompress } from 'expo-zip-zip';
+import * as dp from 'expo-document-picker';
+import * as fs from 'expo-file-system';
+
 const { assets, canceled } = await dp.getDocumentAsync();
 const file = assets?.[0];
 if (file) {
-  // uncompress
+  // Uncompress Example
   const res = ExpoZipZip.uncompress(file.uri);
+  // dirPath: String
+  // file://...
+  
+  // Read extracted files
   const files = await fs.readDirectoryAsync(res);
 
-  // compress
-  const res = ExpoZipZip.compress(res);
+  // Compress Example
+  const res2 = ExpoZipZip.compress(res);
+  // zipPath: String
+  // file://...
 }
 ```
 
