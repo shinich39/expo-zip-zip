@@ -1,12 +1,10 @@
 import { Platform } from 'react-native';
 
-export function normalize(sourcePath: string) {
-  if (Platform.OS === "android") {
-    return sourcePath;
-  } else if (Platform.OS === "ios") {
-    // Bugfix: Remove file protocol. "file://"
-    return sourcePath.replace(/^file:\/\//, "");
-  } else {
-    throw new Error(`Operating System not supported: ${Platform.OS}`);
-  }
+// Remove file protocol. "file://"
+export function normalize(path: string) {
+  return path.replace(/^file:\/\//, "");
+}
+
+export function addProtocol(path: string) {
+  return "file://"+path;
 }

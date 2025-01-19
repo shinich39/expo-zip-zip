@@ -1,5 +1,5 @@
 import { NativeModule, requireNativeModule } from 'expo';
-import { normalize } from './path';
+import { addProtocol, normalize } from './path';
 
 export type ExpoZipZipModuleEvents = {};
 
@@ -13,9 +13,9 @@ export const ExpoZipZip = requireNativeModule<ExpoZipZipModule>('ExpoZipZip');
 
 // Export native methods
 export function compress(sourcePath: string) {
-  return ExpoZipZip.compress(normalize(sourcePath));
+  return addProtocol(ExpoZipZip.compress(normalize(sourcePath)));
 }
 
 export function uncompress(sourcePath: string) {
-  return ExpoZipZip.uncompress(normalize(sourcePath));
+  return addProtocol(ExpoZipZip.uncompress(normalize(sourcePath)))
 }

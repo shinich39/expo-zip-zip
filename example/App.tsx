@@ -10,8 +10,7 @@ export default function App() {
         const { assets, canceled } = await dp.getDocumentAsync();
         const file = assets?.[0];
         if (file) {
-          const fileUri = file.uri.replace("file://", "")
-          const res = ExpoZipZip.uncompress(fileUri);
+          const res = ExpoZipZip.uncompress(file.uri);
           console.log("#1 uncompress", res);
 
           const res2 = ExpoZipZip.compress(res);
@@ -20,8 +19,7 @@ export default function App() {
           const res3 = ExpoZipZip.uncompress(res2);
           console.log("#3 uncompress", res3);
 
-          // Bugfix: Android must have a prefix of file uri 
-          const files = await fs.readDirectoryAsync("file://"+res3);
+          const files = await fs.readDirectoryAsync(res3);
           console.log("#4 read", files);
         }
       }} />
