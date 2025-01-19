@@ -1,73 +1,30 @@
-import { useEvent } from 'expo';
-import ExpoZipZip, { ExpoZipZipView } from 'expo-zip-zip';
-import { Button, SafeAreaView, ScrollView, Text, View } from 'react-native';
+import * as ExpoZipZip from 'expo-zip-zip';
+import { Button, Platform, Text, View } from 'react-native';
+import * as dp from 'expo-document-picker';
+import * as fs from 'expo-file-system';
 
 export default function App() {
-  const onChangePayload = useEvent(ExpoZipZip, 'onChange');
-
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.container}>
-        <Text style={styles.header}>Module API Example</Text>
-        <Group name="Constants">
-          <Text>{ExpoZipZip.PI}</Text>
-        </Group>
-        <Group name="Functions">
-          <Text>{ExpoZipZip.hello()}</Text>
-        </Group>
-        <Group name="Async functions">
-          <Button
-            title="Set value"
-            onPress={async () => {
-              await ExpoZipZip.setValueAsync('Hello from JS!');
-            }}
-          />
-        </Group>
-        <Group name="Events">
-          <Text>{onChangePayload?.value}</Text>
-        </Group>
-        <Group name="Views">
-          <ExpoZipZipView
-            url="https://www.example.com"
-            onLoad={({ nativeEvent: { url } }) => console.log(`Loaded: ${url}`)}
-            style={styles.view}
-          />
-        </Group>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Button title={`Test`} onPress={async () => {
+        const { assets, canceled } = await dp.getDocumentAsync();
+        const file = assets?.[0];
+        if (file) {
+          const fileUri = file.uri.replace("file://", "")
+          const res = ExpoZipZip.uncompress(fileUri);
+          console.log("#1 uncompress", res);
 
-function Group(props: { name: string; children: React.ReactNode }) {
-  return (
-    <View style={styles.group}>
-      <Text style={styles.groupHeader}>{props.name}</Text>
-      {props.children}
+          const res2 = ExpoZipZip.compress(res);
+          console.log("#2 compress", res2);
+
+          const res3 = ExpoZipZip.uncompress(res2);
+          console.log("#3 uncompress", res3);
+
+          // Bugfix: Android must have a prefix of file uri 
+          const files = await fs.readDirectoryAsync("file://"+res3);
+          console.log("#4 read", files);
+        }
+      }} />
     </View>
   );
 }
-
-const styles = {
-  header: {
-    fontSize: 30,
-    margin: 20,
-  },
-  groupHeader: {
-    fontSize: 20,
-    marginBottom: 20,
-  },
-  group: {
-    margin: 20,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 20,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#eee',
-  },
-  view: {
-    flex: 1,
-    height: 200,
-  },
-};

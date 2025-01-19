@@ -4,6 +4,40 @@ import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
 import java.net.URL
 
+import net.lingala.zip4j.ZipFile
+import net.lingala.zip4j.model.ZipParameters
+import java.io.File
+import java.util.UUID
+import kotlin.io.path.createTempDirectory
+import kotlin.io.path.createTempFile
+
+fun compress(dirPath: String): String {
+  val dstFile = createTempFile(prefix = UUID.randomUUID().toString(), suffix = ".zip")
+  val dstPath = dstFile.toAbsolutePath().toString()
+  val zipFile = ZipFile(dstPath)
+  val zipParameters = ZipParameters()
+  zipParameters.setReadHiddenFiles(true)
+  zipParameters.setReadHiddenFolders(true)
+  zipParameters.setIncludeRootFolder(false)
+  zipFile.addFolder(File(dirPath), zipParameters)
+  return dstPath
+}
+
+fun uncompress(zipPath: String): String {
+  val zipFile = ZipFile(zipPath)
+
+  if (zipFile.isEncrypted()) {
+    throw Exception("An archive has been encrypted")
+  }
+
+  val dstDir = createTempDirectory()
+  val dstPath = dstDir.toAbsolutePath().toString()
+
+  zipFile.extractAll(dstPath)
+
+  return dstPath
+}
+
 class ExpoZipZipModule : Module() {
   // Each module class must implement the definition function. The definition consists of components
   // that describes the module's functionality and behavior.
@@ -14,37 +48,12 @@ class ExpoZipZipModule : Module() {
     // The module will be accessible from `requireNativeModule('ExpoZipZip')` in JavaScript.
     Name("ExpoZipZip")
 
-    // Sets constant properties on the module. Can take a dictionary or a closure that returns a dictionary.
-    Constants(
-      "PI" to Math.PI
-    )
-
-    // Defines event names that the module can send to JavaScript.
-    Events("onChange")
-
-    // Defines a JavaScript synchronous function that runs the native code on the JavaScript thread.
-    Function("hello") {
-      "Hello world! 👋"
+    Function("compress") { sourcePath: String ->
+      return@Function compress(sourcePath)
     }
 
-    // Defines a JavaScript function that always returns a Promise and whose native code
-    // is by default dispatched on the different thread than the JavaScript runtime runs on.
-    AsyncFunction("setValueAsync") { value: String ->
-      // Send an event to JavaScript.
-      sendEvent("onChange", mapOf(
-        "value" to value
-      ))
-    }
-
-    // Enables the module to be used as a native view. Definition components that are accepted as part of
-    // the view definition: Prop, Events.
-    View(ExpoZipZipView::class) {
-      // Defines a setter for the `url` prop.
-      Prop("url") { view: ExpoZipZipView, url: URL ->
-        view.webView.loadUrl(url.toString())
-      }
-      // Defines an event that the view can send to JavaScript.
-      Events("onLoad")
+    Function("uncompress") { sourcePath: String ->
+      return@Function uncompress(sourcePath)
     }
   }
 }

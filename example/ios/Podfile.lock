@@ -7,6 +7,8 @@ PODS:
     - ExpoModulesCore
   - ExpoAsset (11.0.2):
     - ExpoModulesCore
+  - ExpoDocumentPicker (13.0.2):
+    - ExpoModulesCore
   - ExpoFileSystem (18.0.7):
     - ExpoModulesCore
   - ExpoFont (13.0.3):
@@ -38,6 +40,7 @@ PODS:
     - Yoga
   - ExpoZipZip (0.1.0):
     - ExpoModulesCore
+    - SSZipArchive
   - FBLazyVector (0.76.6)
   - fmt (9.1.0)
   - glog (0.3.5)
@@ -1547,6 +1550,7 @@ PODS:
     - React-perflogger (= 0.76.6)
     - React-utils (= 0.76.6)
   - SocketRocket (0.7.1)
+  - SSZipArchive (2.6.0)
   - Yoga (0.0.0)
 
 DEPENDENCIES:
@@ -1555,6 +1559,7 @@ DEPENDENCIES:
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - Expo (from `../node_modules/expo`)
   - ExpoAsset (from `../node_modules/expo-asset/ios`)
+  - ExpoDocumentPicker (from `../node_modules/expo-document-picker/ios`)
   - ExpoFileSystem (from `../node_modules/expo-file-system/ios`)
   - ExpoFont (from `../node_modules/expo-font/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
@@ -1627,6 +1632,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - SocketRocket
+    - SSZipArchive
 
 EXTERNAL SOURCES:
   boost:
@@ -1639,6 +1645,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo"
   ExpoAsset:
     :path: "../node_modules/expo-asset/ios"
+  ExpoDocumentPicker:
+    :path: "../node_modules/expo-document-picker/ios"
   ExpoFileSystem:
     :path: "../node_modules/expo-file-system/ios"
   ExpoFont:
@@ -1779,11 +1787,12 @@ SPEC CHECKSUMS:
   EXConstants: cc788e18fb962b77999c16f6b90e551542b1bcf4
   Expo: 377cc60ce8c9030cf52e36987ab3ce099ab9006e
   ExpoAsset: 6cc988c426b5fc997859cc0f8f6728d1376bf53f
+  ExpoDocumentPicker: 2dcad7f93b938922cd6ebee90e9f36048b45ef82
   ExpoFileSystem: a0a5c44d3d3e8a2aa54fe7c70c7690df03cf4dd8
   ExpoFont: 8b14db1afebf62e9774613a082e402985f4e747c
   ExpoKeepAwake: 1f74cdf53ab3b3aeb7110f18eb053c92e7c3e710
   ExpoModulesCore: f9546265a5e1f1fd67473bb2f0463b28252cee49
-  ExpoZipZip: f181599d0d4e28ee8dafb264b5ac03a9cf693737
+  ExpoZipZip: d2b68806823ff0aed0164b799a4cb5e22bb75898
   FBLazyVector: be509404b5de73a64a74284edcaf73a5d1e128b1
   fmt: 10c6e61f4be25dc963c36bd73fc7b1705fe975be
   glog: 08b301085f15bcbb6ff8632a8ebaf239aae04e6a
@@ -1845,6 +1854,7 @@ SPEC CHECKSUMS:
   ReactCodegen: 484b223748d7489d7036db1cbf79896d297e33a7
   ReactCommon: 832cdd669aeecd430d9ca1975d15676b38d0b263
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
+  SSZipArchive: 8a6ee5677c8e304bebc109e39cf0da91ccef22ea
   Yoga: be6f55a028e86c83ae066f018e9b5d24ffc45436
 
 PODFILE CHECKSUM: d933e60a17890abd537914ac55ac5b1e678c0c4e
