@@ -8,10 +8,8 @@ export declare class ExpoZipZipModule extends NativeModule<ExpoZipZipModuleEvent
   uncompress(sourcePath: string): string;
 }
 
-// This call loads the native module object from the JSI.
 export const ExpoZipZip = requireNativeModule<ExpoZipZipModule>('ExpoZipZip');
 
-// Export native methods
 export function compress(sourcePath: string) {
   return addProtocol(ExpoZipZip.compress(normalize(sourcePath)));
 }
